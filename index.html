@@ -1,81 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> html 转为图片</title>
-</head>
-<style>
-    .container{
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-    h3,p{
-        width: 100%;
-        text-align: center;
-    }
-    ol{
-        width: 100%;
-        padding: 0;
-    }
-    li{
-       text-align: center;
-       list-style: none;
-    }
-    img{
-        width: 200px;
-        height: 150px;
-        margin: 0 auto;
-    }
-</style>
-<body>
-    <div class="container">
-        <h3>将此网页转换为一张图片</h3>
-        <p>
-            前往
-            <a href="https://html2canvas.hertzen.com/dist/html2canvas.min.js" target="_blank">
-                此处
-            </a>
-            下载html2canvas.js
-        </p>
-        <img src="http://img4.imgtn.bdimg.com/it/u=2153706307,1786056933&fm=26&gp=0.jpg" alt="">
-        <ol>
-            <li>内容一</li>
-            <li>内容二</li>
-            <li>内容三</li>
-            <li>内容四</li>
-            <li>内容五</li>
-        </ol>
-    </div>
-    <p id="save">点此保存图片</p>
-    <p id="look">点此预览图片</p>
-    <hr>
+    <title>htmltopic</title>
+    <script type="text/javascript" src="./jquery.js"></script>
     <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
-    <!-- <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> -->
-    <script>
-        save.onclick = function(){
-            html2canvas(document.querySelector(".container"),{
-                useCORS:true,
-                logging:true,   
-            }).then(canvas => {
-                var url = canvas.toDataURL('image/png')
-                var a = document.createElement('a')
-                var event = new MouseEvent('click')
-                a.download = name || '下载图片名称'
-                a.href = url
-                a.dispatchEvent(event)
-            });
+    <style>
+        * {
+            margin: 0;
         }
-        look.onclick = function(){
-            html2canvas(document.querySelector(".container"),{
-                useCORS:true,
-                logging:true,
-            }).then(canvas => {
-                document.body.appendChild(canvas);
+ 
+ 
+        .test {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            background-color: #87CEEB;
+            display: inline-block;
+            vertical-align: top;
+        }
+ 
+ 
+        canvas {
+            margin-right: 5px;
+        }
+ 
+ 
+        .down {
+            float: left;
+            margin: 40px 10px;
+        }
+        .down2 {
+            float: left;
+            margin: 40px 30px;
+        }
+    </style>
+</head>
+<body>
+ 
+ 
+    <div class="test">测试</div>
+<div><a class="down" href="" download="downImg">下载</a>
+</div>
+    <div><a class="down2" href="" download="downImg">下载2</a></div>
+<script>
+    //直接选择要截图的dom，就能截图，但是因为canvas的原因，生成的图片模糊
+    //html2canvas(document.querySelector('div')).then(function(canvas) {
+    //    document.body.appendChild(canvas);
+    //});
+    //创建一个新的canvas
+    var canvas2 = document.createElement("canvas");
+    let
+    _canvas = document.querySelector('div');
+    var w = parseInt(window.getComputedStyle(_canvas).width);
+    var h = parseInt(window.getComputedStyle(_canvas).height);
+    //将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+    canvas2.width = w * 2;
+    canvas2.height = h * 2;
+    canvas2.style.width = w + "px";
+    canvas2.style.height = h + "px";
+    //可以按照自己的需求，对context的参数修改,translate指的是偏移量
+    //  var context = canvas.getContext("2d");
+    //  context.translate(0,0);
+    var context = canvas2.getContext("2d");
+    context.scale(2, 2);
+    html2canvas(document.querySelector('div'), { canvas: canvas2 }).then(function(canvas) {
+        //document.body.appendChild(canvas);
+        //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+        document.querySelector(".down").setAttribute('href', canvas.toDataURL());
+    });
+</script>
+ 
+ 
+<script language="javascript">
+    //这是另一种写法
+    $(function () {
+        $(".down2").click(function () {
+            html2canvas($(".test")).then(function (canvas) {
+                var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
+                window.location.href = imgUri; // 下载图片
             });
-        }   
-    </script>
+ 
+ 
+            //html2canvas($('.tongxingzheng_bg'), {
+            //    onrendered: function (canvas) {
+            //        var data = canvas.toDataURL("image/png");//生成的格式
+            //        //data就是生成的base64码啦
+            //        alert(data);
+            //    }
+            //});
+        });
+    });
+</script>
 </body>
 </html>
