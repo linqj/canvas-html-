@@ -49,9 +49,9 @@
         <p>脚本：javascript</p> 
         <p><input type="text" class="tx" placeholder="微信公众号开发"></p> 
         <p><input type="button" class="bt" value="网站微站开发"></p> 
+        <div id='btnSave'>点击生成图片</div>
     </div>
-    <div id='btnSave'>点击生成图片</div>
-    <div id='images'>预览</div>
+   
 <script>
    /*生成canvas图形*/ 
  
@@ -67,11 +67,11 @@ btnSave.onclick = function(){
             canvas.setAttribute('id','thecanvas'); 
             //读取属性值 
             // var value= canvas.getAttribute('id'); 
-            let imageContent=document.getElementById('images');
+            let imageContent=document.getElementById('content');
 console.log('imageContent');
 console.log(imageContent);
-            document.getElementById('images').innerHTML = ''; 
-            document.getElementById('images').appendChild(canvas); 
+imageContent.innerHTML = ''; 
+imageContent.appendChild(canvas); 
         } 
     }); 
 }
